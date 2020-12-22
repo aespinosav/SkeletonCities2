@@ -108,7 +108,7 @@ function save_paths_tikz(g::AbstractGraph, paths, node_coords::Array{Float64,2},
         for edge in edges(g)
             s = edge.src
             t = edge.dst
-            drawing *= "\\draw[thick,opacity=0.2] ($(s).center) -- ($(t).center);\n"
+            drawing *= "\\draw[thick,opacity=0.1] ($(s).center) -- ($(t).center);\n"
         end
         drawing *= "\\end{scope}\n\n"
     end

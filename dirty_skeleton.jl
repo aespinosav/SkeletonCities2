@@ -1,4 +1,4 @@
-using LinearAlgebra, LightGraphs
+using LinearAlgebra, LightGraphs, MetaGraphs
 
 """
 Checks if point 'p' is in the circle based region of points u and v
@@ -83,6 +83,60 @@ function β_skeleton(points::Array{Float64,2}, β)
     g
 end
 
+function β_skeleton_meta(points::Array{Float64,2}, β)
+
+    if β <= 1
+        in_C = in_C_1
+    else
+        in_C = in_C_2
+    end
+    
+    N = size(points)[1] 
+    g = SimpleGraph(N)
+    
+    possible_edges = triangulation_edges_gr(points)
+    
+    for ed in possible_edges
+        index_u, index_v = ed
+        u, v = points[index_u,:], points[index_v,:]
+        
+        isempty = true
+        for index_p in 1:N
+            if index_p != index_u && index_p != index_v        
+                        
+                p = points[index_p,:]
+                if in_C(p,u,v,β)
+                    isempty = false
+                    break    
+                end
+            end
+        end
+        if isempty
+            add_edge!(g, index_u, index_v)
+        end
+    end
+    
+    #This really doenst seem like the most efficient way to do this...
+    mg = MetaGraph(g)
+    edge_lengths = zeros(ne(g))
+    for (i,ed) in enumerate(edges(mg))
+        pos_s = points[ed.src,:]
+        pos_t = points[ed.dst, :]
+        
+        e_len = norm(pos_t - pos_s)
+        
+        edge_lengths[i] = e_len
+        set_prop!(mg, ed, :length, e_len)
+    end
+    for v in vertices(mg)
+        set_prop!(mg, v, :position, points[v, :])
+    end
+    weightfield!(mg, :length)
+    mg
+end
+
+
+
 """
 Makes a beta skeleton from a set of points given as a 2D array of coordinates.
 Function uses GR.delaunay for building triangulation
@@ -124,3 +178,12 @@ function β_skeleton_directed(points::Array{Float64,2}, β)
     g
 end
 
+function αβ_network(n, α, β)
+    nodes_pos = α_set(n, α)
+    g = β_skeleton(nodes_pos, β)
+end
+
+function αβ_network_meta(n, α, β)
+    nodes_pos = α_set(n, α)
+    g = β_skeleton_meta(nodes_pos, β)
+end

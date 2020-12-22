@@ -6,7 +6,9 @@ export
     #From delaunay_triangulation_GR.jl
     triangulation_edges_gr,
     #From dirty_skeleton.jl
-    β_skeleton,
+    β_skeleton, β_skeleton_meta, αβ_network,
+    #From ptn_graphs.jl
+    to_l_space, to_p_space,
     #From "plot_tikz_graphs.jl"
     save_graph_tikz, save_paths_tikz
     
@@ -23,6 +25,7 @@ export
 include("lattice.jl")
 include("delaunay_triangulation_GR.jl")
 include("dirty_skeleton.jl")
+include("ptn_graphs.jl")
 include("plot_tikz_graphs.jl")
 
 #include("skele_road_net.jl")

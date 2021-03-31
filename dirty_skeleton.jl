@@ -187,3 +187,22 @@ function αβ_network_meta(n, α, β)
     nodes_pos = α_set(n, α)
     g = β_skeleton_meta(nodes_pos, β)
 end
+
+###
+### Auxiliary functions for convenience
+###
+
+"""
+Returns 2D array of node coordinates of metagraph g
+    
+    get_node_pos(g::MetaGraph)
+"""
+function get_node_pos(g::MetaGraph)
+    N = nv(g)
+    nodes_pos = zeros(Float64, N, 2)
+    for v in vertices(g)
+        coords = g.vprops[v][:position]
+        nodes_pos[v,:] = coords
+    end
+    nodes_pos
+end

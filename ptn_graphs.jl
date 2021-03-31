@@ -70,21 +70,8 @@ function to_p_space(g, lines)
     reverse_labels = Dict(zip(1:n_verts, L_vertices))
     
     lines_new_labels = copy(lines)
-    for l in lines_new_labels
-        l = map(x -> vertex_labels[x], l)
-    end
-    
-    L_edges = Set{Tuple{Int64,Int64}}()
-    for l in lines_new_labels
-        for v1 in 1:length(l)
-            for v2 in v1:length(l)
-                ed_tup = (l[v1], l[v2])
-                rev_ed_tup = (ed_tup[2], ed_tup[1])
-                if !in(rev_ed_tup, L_edges) 
-                    push!(L_edges, ed_tup)
-                end 
-            end
-        end
+    for i in 1:num_lines
+        lines_new_labels[i] = map(x -> vertex_labels[x], lines[i])
     end
     
     mg = MetaGraph()
@@ -94,17 +81,28 @@ function to_p_space(g, lines)
     
     for v in 1:n_verts
         add_vertex!(mg)
-        
         r_lab = reverse_labels[v]
         pos = get_prop(g, r_lab, :position)
         set_prop!(mg, v, :position, pos)
     end
-    for ed_new in L_edges
-        add_edge!(mg, ed_new)
-    end
+    
+    #L_edges = Set{Tuple{Int64,Int64}}()
+    for l in lines_new_labels
+        for (i, v1) in enumerate(l)
+            for j in i+1:length(l)
+                v2 = l[j]
+                
+                add_edge!(mg, v1, v2)
+                #ed_tup = (v1, v2)
+                #rev_ed_tup = (v2, v1)
+                #if !in(rev_ed_tup, L_edges) 
+                #    push!(L_edges, ed_tup)
+                #end 
+            end
+        end
+    end   
+    #for ed_new in L_edges
+    #    add_edge!(mg, ed_new)
+    #end
     mg
 end
-
-
-
-

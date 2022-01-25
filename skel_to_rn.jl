@@ -8,12 +8,11 @@ function skel2rn(mg::MetaGraph, res_constant=1)
     
     pos = get_node_pos(mg)
     
-    
     g = SimpleDiGraph(mg.graph)
     
     as = zeros(ne(g))
-    for (i,e) in enumerate(edges(g))
-        len = get_prop(mg, e.src, e.dst, :length)
+    for (i,ed) in enumerate(edges(g))
+        len = get_prop(mg, ed.src, ed.dst, :length)
         as[i] = len
     end
     

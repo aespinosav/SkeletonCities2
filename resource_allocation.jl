@@ -15,7 +15,7 @@ function resource_allocation(g, lens; constant=1.0)
         push!(sums_of_as, suma_of_a)
     end
 
-    lamb = 1.0 / ((1 ./ in_degrees) ⋅ sums_of_as)
+    lamb = constant / ((1 ./ in_degrees) ⋅ sums_of_as)
     
     bs = zeros(Float64, M)
     suma = 0

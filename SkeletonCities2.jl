@@ -8,15 +8,18 @@ export
     #From delaunay_triangulation_GR.jl
     triangulation_edges_gr,
     #From dirty_skeleton.jl
-    β_skeleton, β_skeleton_meta, αβ_network, αβ_network_meta, get_node_pos,
+    β_skeleton, β_skeleton_meta, αβ_network,
+    αβ_network_meta, get_node_pos, edge_lengths,
     #From ptn_graphs.jl
     to_l_space, to_p_space,
     #From "plot_tikz_graphs.jl"
-    save_graph_tikz, save_paths_tikz,
+    save_graph_tikz, save_paths_tikz, save_graph_tikz_edg,
     # From resource_allocation.jl
     resource_allocation,
     # From skel_to_rn.jl
-    skel2rn
+    skel2rn,
+    # From load_skeletons.jl
+    load_rn
     
     #From skele_road_net.jl
     #skeleton_graph_αβ,
@@ -35,6 +38,7 @@ include("ptn_graphs.jl")
 include("plot_tikz_graphs.jl")
 include("resource_allocation.jl")
 include("skel_to_rn.jl")
+include("load_skeletons.jl")
 
 #include("skele_road_net.jl")
 #include("graph_read_write.jl")

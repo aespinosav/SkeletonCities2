@@ -206,3 +206,28 @@ function get_node_pos(g::MetaGraph)
     end
     nodes_pos
 end
+
+function get_node_pos(rn::RoadNetwork)
+    rn.node_params[:pos]
+end
+
+"""
+Returns an array with the length of the edges.
+
+    edge_lengths(g, node_positions)
+
+`node_positions` has to be given as a nx2 2D array
+"""
+function edge_lengths(g, node_positions)
+    a = []
+    for (i, e) in enumerate(edges(g))
+        s, t = e.src, e.dst
+        xs, ys = node_positions[s,:]
+        xt, yt = node_positions[t,:]
+
+        r_len = norm([xt, yt] - [xs, ys])
+
+        push!(a, r_len)
+    end
+    a
+end

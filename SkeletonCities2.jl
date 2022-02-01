@@ -4,8 +4,9 @@ using GR,
       LinearAlgebra,
       LightGraphs,
       MetaGraphs,
-      Colors,
-      TrafficNetworks2: RoadNetwork
+      Colors
+
+using TrafficNetworks2: RoadNetwork
 
 export
     # From lattice.jl

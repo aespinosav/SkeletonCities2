@@ -1,4 +1,5 @@
-# Function `resource_allocation` requires RoadNetwork from TrafficNetworks2
+# Function `resource_allocation` requires RoadNetwork from TrafficNetworks2, but the is no longer
+# type parametrised
 
 """
 Endogenous definition of congestible term for affine cost functions
@@ -30,7 +31,13 @@ function resource_allocation(g, lens; constant=1.0)
     bs
 end
 
-function resource_allocation(rn::RoadNetwork; constant=1.0)
+"""
+Allocate congestible parameters for affine cost functions
+based on resource allocation heuristic.
+
+rn should be a RoadNetwrok
+"""
+function resource_allocation(rn; constant=1.0)
     g = rn.g
     lens = rn.edge_params[:a]
     resource_allocation(g, lens, constant=constant)

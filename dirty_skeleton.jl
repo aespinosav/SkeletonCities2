@@ -209,7 +209,7 @@ function get_node_pos(g::MetaGraph)
     nodes_pos
 end
 
-function get_node_pos(rn::RoadNetwork)
+function get_node_pos(rn)
     rn.node_params[:pos]
 end
 

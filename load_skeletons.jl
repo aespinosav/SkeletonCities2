@@ -1,3 +1,5 @@
+# Requires RoadNetwork from TrafficNetworks2
+
 """
 Loads graph from file (saved in MetaGraph format)
 returns a road network.

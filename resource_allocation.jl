@@ -1,10 +1,12 @@
+# Function `resource_allocation` requires RoadNetwork from TrafficNetworks2
+
 """
 Endogenous definition of congestible term for affine cost functions
 """
 function resource_allocation(g, lens; constant=1.0)
     M = ne(g)
     N = nv(g)
-        
+
     inc_mat = incidence_matrix(g)
     in_edges_array = [findall(x->x>0, inc_mat[i,:]) for i in 1:N]
     in_degrees = indegree(g)
@@ -16,7 +18,7 @@ function resource_allocation(g, lens; constant=1.0)
     end
 
     lamb = constant / ((1 ./ in_degrees) ⋅ sums_of_as)
-    
+
     bs = zeros(Float64, M)
     suma = 0
     for n in 1:N

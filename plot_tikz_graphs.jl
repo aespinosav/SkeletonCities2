@@ -15,14 +15,14 @@ The optional variable 'standalone_doc' is by default set to true. Setting it to 
 function save_graph_tikz(g::AbstractGraph, node_coords::Array{Float64,2}, filename::String; scale=10, standalone_doc=true)
 
     #scale = 10
-    
+
     n = nv(g) # Nodes
     m = ne(g) # Edges
 
     # Begin tikz picture #####################################################################
 
     drawing ="\n\\begin{tikzpicture}\n"
-    
+
     #Begin node scope (toggle comment for nodes or no nodes)
     drawing *= "\\begin{scope}\n\\tikzstyle{every node}=[draw=none,fill=none,inner sep=0]\n"
     #drawing *= "\\begin{scope}\n\\tikzstyle{every node}=[draw,circle,fill=gray,minimum size=0.1cm]\n"
@@ -31,10 +31,10 @@ function save_graph_tikz(g::AbstractGraph, node_coords::Array{Float64,2}, filena
         drawing *= "\\node ($i) at ($(x*scale),$(y*scale)) {};\n"
     end
     drawing *= "\\end{scope}\n"
-    
+
     #Begin dashed frame scope
     drawing *="\\begin{scope}\n\\draw[gray,thin,dashed] (0,0) rectangle ($(scale),$(scale));\n\\end{scope}\n\n"
-    
+
     #Begin edge scope
     if m != 0   #If there are no edges, adding an empty scope is likely to cause problems
         drawing *= "\\begin{scope}\n"
@@ -45,12 +45,12 @@ function save_graph_tikz(g::AbstractGraph, node_coords::Array{Float64,2}, filena
         end
         drawing *= "\\end{scope}\n\n"
     end
-    
+
     #End tikzpicture
     drawing *="\\end{tikzpicture}"
 
     ##########################################################################################    
-    
+
     #Add header and footer to file
     if standalone_doc 
         head = """
@@ -60,7 +60,7 @@ function save_graph_tikz(g::AbstractGraph, node_coords::Array{Float64,2}, filena
 \\PreviewBorder=2pt
 \\PreviewEnvironment{tikzpicture}
 \\begin{document}\n"""
-                  
+
         tail = "\n\\end{document}"
         drawing = head*drawing*tail
     end
@@ -96,19 +96,19 @@ function save_paths_tikz(g::AbstractGraph,
                          standalone_doc=true)
 
     #scale = 10
-    
+
     n = nv(g) # Nodes
     m = ne(g) # Edges
-    
+
     M = length(paths) # number of paths
-    
+
     color_array = distinguishable_colors(M, [RGB(1,1,1), RGB(0,0,0)], dropseed=true)
     color_array = convert.(RGB{Float64}, color_array)
 
     # Begin tikz picture #####################################################################
 
     drawing ="\n\\begin{tikzpicture}\n"
-    
+
     #Begin node scope (toggle comment for nodes or no nodes)
     drawing *= "\\begin{scope}\n\\tikzstyle{every node}=[draw=none,fill=none,inner sep=0]\n"
     #drawing *= "\\begin{scope}\n\\tikzstyle{every node}=[draw,circle,fill=gray,minimum size=0.1cm]\n"
@@ -117,10 +117,10 @@ function save_paths_tikz(g::AbstractGraph,
         drawing *= "\\node ($i) at ($(x*scale),$(y*scale)) {};\n"
     end
     drawing *= "\\end{scope}\n"
-    
+
     #Begin dashed frame scope
     drawing *="\\begin{scope}\n\\draw[gray,thin,dashed] (0,0) rectangle ($(scale),$(scale));\n\\end{scope}\n\n"
-    
+
     #Begin edge scope
     if m != 0   #If there are no edges, adding an empty scope is likely to cause problems
         drawing *= "\\begin{scope}\n"
@@ -131,62 +131,62 @@ function save_paths_tikz(g::AbstractGraph,
         end
         drawing *= "\\end{scope}\n\n"
     end
-    
-    ### 
+
+    ###
     ### Draw paths
     ###
     for i in 1:M
         drawing *= "\\begin{scope}\n"
-        
+
         edge_color=color_array[i]
         color_str = "{rgb,255:red,$(edge_color.r*255);green,$(edge_color.g*255);blue,$(edge_color.b*255)}"
-       
+
         p = paths[i]
         for j in 1:length(p)-1
             s = p[j]
             t = p[j+1]
             drawing *= "\\draw[thick,color=$(color_str),opacity=0.7] ($(s).center) -- ($(t).center);\n"
-            
+
         end
         drawing *= "\\end{scope}\n\n"
     end
-    
+
     ###
     ### Scope for highlighted nodes
     ###
-    
+
     if length(imp_nodes) > 0
         if length(imp_labels) == 0
             for i in 1:length(imp_nodes)
                 push!(imp_labels, "")
             end
         end
-    
+
         drawing *= "\\begin{scope}\n"
-        
+
         #nodes should be indices...
         #for (i,v) in enumerate(imp_nodes)
         #    x, y = node_coords[v,1], node_coords[v,2]
         #    drawing *= "\\node (imp$i) [black,fill,circle,minimum size=0.1] at ($(x*scale),$(y*scale)) {$(imp_labels[i])};\n"
         #end
-        
+
         #nodes should be indices...
         for (i,v) in enumerate(imp_nodes)
             x, y = node_coords[v,1], node_coords[v,2]
             drawing *= "\\node (imp$i) [black,fill,circle,minimum size=0.1, label={$(imp_labels[i])}] at ($(x*scale),$(y*scale)) {};\n"
              #drawing *= "\\node (imp$i) [black,fill,circle,minimum size=0.1] at ($(x*scale),$(y*scale)) {$(imp_labels[i])};\n"
         end
-        
+
         drawing *= "\\end{scope}\n\n"
-    end    
+    end
 
     ### End tikzpicture
     drawing *="\\end{tikzpicture}"
-        
+
     ###
     ### Add header and footer to file
     ###
-    if standalone_doc 
+    if standalone_doc
         head = """
 \\documentclass{article}
 \\usepackage{tikz}
@@ -194,7 +194,7 @@ function save_paths_tikz(g::AbstractGraph,
 \\PreviewBorder=2pt
 \\PreviewEnvironment{tikzpicture}
 \\begin{document}\n"""
-                  
+
         tail = "\n\\end{document}"
         drawing = head*drawing*tail
     end
@@ -230,19 +230,19 @@ function save_graph_tikz_edg(g::AbstractGraph,
                              standalone_doc=true)
 
     #scale = 10
-    
+
     n = nv(g) # Nodes
     m = ne(g) # Edges
-    
+
     M = length(edges_array) # number of paths
-    
+
     color_array = distinguishable_colors(M, [RGB(1,1,1), RGB(0,0,0)], dropseed=true)
     color_array = convert.(RGB{Float64}, color_array)
 
     # Begin tikz picture #####################################################################
 
     drawing ="\n\\begin{tikzpicture}[->]\n"
-    
+
     #Begin node scope (toggle comment for nodes or no nodes)
     drawing *= "\\begin{scope}\n\\tikzstyle{every node}=[draw=none,fill=none,inner sep=0]\n"
     #drawing *= "\\begin{scope}\n\\tikzstyle{every node}=[draw,circle,fill=gray,minimum size=0.1cm]\n"
@@ -251,10 +251,10 @@ function save_graph_tikz_edg(g::AbstractGraph,
         drawing *= "\\node ($i) at ($(x*scale),$(y*scale)) {};\n"
     end
     drawing *= "\\end{scope}\n"
-    
+
     #Begin dashed frame scope
     drawing *="\\begin{scope}\n\\draw[gray,thin,dashed] (0,0) rectangle ($(scale),$(scale));\n\\end{scope}\n\n"
-    
+
     #Begin edge scope
     if m != 0   #If there are no edges, adding an empty scope is likely to cause problems
         drawing *= "\\begin{scope}\n"
@@ -269,57 +269,57 @@ function save_graph_tikz_edg(g::AbstractGraph,
             end
         end
         drawing *= "\\end{scope}\n\n"
-    end    
-    
-    ### 
+    end
+
+    ###
     ### Draw paths
     ###
     for i in 1:M
         drawing *= "\\begin{scope}\n"
-        
+
         edge_color=color_array[i]
         color_str = "{rgb,255:red,$(edge_color.r*255);green,$(edge_color.g*255);blue,$(edge_color.b*255)}"
-       
+
         p = edges_array[i]
         for j in 1:length(p)
             s = p[j][1]
             t = p[j][2]
             drawing *= "\\draw[thick,color=$(color_str),opacity=0.7] ($(s).center) -- ($(t).center);\n"
-            
+
         end
         drawing *= "\\end{scope}\n\n"
     end
-    
+
     ###
     ### Scope for highlighted nodes
     ###
-    
+
     if length(imp_nodes) > 0
         if length(imp_labels) == 0
             for i in 1:length(imp_nodes)
                 push!(imp_labels, "")
             end
         end
-    
+
         drawing *= "\\begin{scope}\n"
-        
+
         #nodes should be indices...
         for (i,v) in enumerate(imp_nodes)
             x, y = node_coords[v,1], node_coords[v,2]
             drawing *= "\\node (imp$i) [black,fill,circle,minimum size=0.1, label={$(imp_labels[i])}] at ($(x*scale),$(y*scale)) {};\n"
              #drawing *= "\\node (imp$i) [black,fill,circle,minimum size=0.1] at ($(x*scale),$(y*scale)) {$(imp_labels[i])};\n"
         end
-        
+
         drawing *= "\\end{scope}\n\n"
-    end    
+    end
 
     ### End tikzpicture
     drawing *="\\end{tikzpicture}"
-        
+
     ###
     ### Add header and footer to file
     ###
-    if standalone_doc 
+    if standalone_doc
         head = """
 \\documentclass{article}
 \\usepackage{tikz}
@@ -327,7 +327,7 @@ function save_graph_tikz_edg(g::AbstractGraph,
 \\PreviewBorder=2pt
 \\PreviewEnvironment{tikzpicture}
 \\begin{document}\n"""
-                  
+
         tail = "\n\\end{document}"
         drawing = head*drawing*tail
     end
@@ -360,19 +360,19 @@ Plot graph as well as a set of paths given as an array of arrays
 function save_paths_tikz_old(g::AbstractGraph, paths, node_coords::Array{Float64,2}, filename::String; scale=10, standalone_doc=true)
 
     #scale = 10
-    
+
     n = nv(g) # Nodes
     m = ne(g) # Edges
-    
+
     M = length(paths) # number of paths
-    
+
     color_array = distinguishable_colors(M, [RGB(1,1,1), RGB(0,0,0)], dropseed=true)
     color_array = convert.(RGB{Float64}, color_array)
 
     # Begin tikz picture #####################################################################
 
     drawing ="\n\\begin{tikzpicture}\n"
-    
+
     #Begin node scope (toggle comment for nodes or no nodes)
     drawing *= "\\begin{scope}\n\\tikzstyle{every node}=[draw=none,fill=none,inner sep=0]\n"
     #drawing *= "\\begin{scope}\n\\tikzstyle{every node}=[draw,circle,fill=gray,minimum size=0.1cm]\n"
@@ -381,10 +381,10 @@ function save_paths_tikz_old(g::AbstractGraph, paths, node_coords::Array{Float64
         drawing *= "\\node ($i) at ($(x*scale),$(y*scale)) {};\n"
     end
     drawing *= "\\end{scope}\n"
-    
+
     #Begin dashed frame scope
     drawing *="\\begin{scope}\n\\draw[gray,thin,dashed] (0,0) rectangle ($(scale),$(scale));\n\\end{scope}\n\n"
-    
+
     #Begin edge scope
     if m != 0   #If there are no edges, adding an empty scope is likely to cause problems
         drawing *= "\\begin{scope}\n"
@@ -395,33 +395,33 @@ function save_paths_tikz_old(g::AbstractGraph, paths, node_coords::Array{Float64
         end
         drawing *= "\\end{scope}\n\n"
     end
-    
-    ### 
+
+    ###
     ### Draw paths
     ###
     for i in 1:M
         drawing *= "\\begin{scope}\n"
-        
+
         edge_color=color_array[i]
         color_str = "{rgb,255:red,$(edge_color.r*255);green,$(edge_color.g*255);blue,$(edge_color.b*255)}"
-       
+
         p = paths[i]
         for j in 1:length(p)-1
             s = p[j]
             t = p[j+1]
             drawing *= "\\draw[thick,color=$(color_str),opacity=0.7] ($(s).center) -- ($(t).center);\n"
-            
+
         end
         drawing *= "\\end{scope}\n\n"
     end
-   
+
     #End tikzpicture
     drawing *="\\end{tikzpicture}"
-        
+
     ###
     ### Add header and footer to file
     ###
-    if standalone_doc 
+    if standalone_doc
         head = """
 \\documentclass{article}
 \\usepackage{tikz}
@@ -429,7 +429,7 @@ function save_paths_tikz_old(g::AbstractGraph, paths, node_coords::Array{Float64
 \\PreviewBorder=2pt
 \\PreviewEnvironment{tikzpicture}
 \\begin{document}\n"""
-                  
+
         tail = "\n\\end{document}"
         drawing = head*drawing*tail
     end

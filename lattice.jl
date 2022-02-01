@@ -14,10 +14,10 @@ and the unit (a) square boundary.
 """
 function square_lattice(n, a=1)
     N = n^2
-    
+
     gap = a/n # number of gaps + 1 since clearance is 1/2 of the gap
     clearance = 0.5*gap
-   
+
     points = zeros(N,2)
     for k in 0:N-1 #because index function starts at 0
         i, j = indices_of_lattice_point(k, n)
@@ -64,7 +64,7 @@ function drop_point(corner_array)
 
     x = rand()*xlength
     y = rand()*ylength
-    
+
     p = [x,y] + corner_array[1,:][:]
 end
 
@@ -75,7 +75,7 @@ Returns a set of perturbed lattice points. For α=0 a square lattice is generate
 function α_set(n, α, a=1)
     N = n^2
     lattice_points = square_lattice(n, a)
-    
+
     if α == 0.0
         points = lattice_points
     else

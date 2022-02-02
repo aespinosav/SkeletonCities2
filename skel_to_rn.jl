@@ -1,7 +1,8 @@
-# Requires RoadNetwork from TrafficNetworks
+# Requires RoadNetwork from TrafficNetworks, but I dont think it needs it to compile
+# just to actually be used
 
 """
-Convert αβ-network in metagraph format to 
+Convert αβ-network in metagraph format to
 RoadNetwork type.
 
 Returns RoadNetwork

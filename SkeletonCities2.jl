@@ -6,7 +6,7 @@ using GR,
       MetaGraphs,
       Colors
 
-#using TrafficNetworks2: RoadNetwork
+using TrafficNetworks2: RoadNetwork
 
 export
     # From lattice.jl

@@ -2,7 +2,7 @@ module SkeletonCities2
 
 using GR,
       LinearAlgebra,
-      LightGraphs,
+      Graphs,
       MetaGraphs,
       Colors
 
